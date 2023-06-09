@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>requestIdleCallback</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .ball {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-color: blue;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ball"></div>
+    <script>
+      const ball = document.querySelector(".ball");
+
+      let positionX = 0;
+      const ballWidth = ball.clientWidth;
+      const viewportWidth = window.innerWidth;
+      let speedX = 2;
+
+      function moveBall() {
+        // 更新小球位置
+        positionX += speedX;
+
+        // 检查边界并反弹
+        if (positionX < 0 || positionX + ballWidth > viewportWidth) {
+          speedX = -speedX;
+        }
+
+        // 设置小球新位置
+        ball.style.transform = `translateX(${positionX}px)`;
+
+        // 请求下一帧动画
+        requestAnimationFrame(moveBall);
+      }
+
+      // 开始动画
+      requestAnimationFrame(moveBall);
+
+      //   setInterval(moveBall,20)  和使用计时器相比，使用requestAnimationFrame，动画更显丝滑
+    </script>
+  </body>
+</html>
