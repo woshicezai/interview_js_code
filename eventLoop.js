@@ -9,14 +9,19 @@
 // process.nextTick(() => console.log("this is process.nextTick 1"));
 // process.nextTick(() => {
 //   console.log("this is process.nextTick 2");
-//   process.nextTick(() => console.log("this is the inner next tick inside next tick"));
+//   process.nextTick(() => {
+//     console.log("this is the inner next tick inside next tick");
+//     process.nextTick(() => console.log("ddddddsssss"));
+//   });
 // });
 // process.nextTick(() => console.log("this is process.nextTick 3"));
 
 // Promise.resolve().then(() => console.log("this is Promise.resolve 1"));
 // Promise.resolve().then(() => {
 //   console.log("this is Promise.resolve 2");
-//   process.nextTick(() => console.log("this is the inner next tick inside Promise then block"));
+//   process.nextTick(() =>
+//     console.log("this is the inner next tick inside Promise then block")
+//   );
 // });
 // Promise.resolve().then(() => console.log("this is Promise.resolve 3"));
 
@@ -29,14 +34,17 @@
 // process.nextTick(() => console.log("this is process.nextTick 1"));
 // process.nextTick(() => {
 //   console.log("this is process.nextTick 2");
-//   process.nextTick(() => consol.log("this is the inner next tick inside next tick"));
+//   process.nextTick(() =>
+//     console.log("this is the inner next tick inside next tick")
+//   );
 // });
 // process.nextTick(() => console.log("this is process.nextTick 3"));
 
 // Promise.resolve().then(() => console.log("this is Promise.resolve 1"));
 // Promise.resolve().then(() => {
 //   console.log("this is Promise.resolve 2");
-//   process.nextTick(() => console.log("this is the inner next tick inside Promise then block")
+//   process.nextTick(() =>
+//     console.log("this is the inner next tick inside Promise then block")
 //   );
 // });
 // Promise.resolve().then(() => console.log("this is Promise.resolve 3"));
@@ -99,7 +107,6 @@
 // fs.readFile(__filename, () => {
 //   console.log("this is readFile 1");
 // });
-
 /** Experiment 8 - I/O queue callbacks are executed after Microtask queues callbacks and Timer queue callbacks are executed */
 
 // const fs = require("fs");
@@ -110,7 +117,7 @@
 
 // process.nextTick(() => console.log("this is process.nextTick 1"));
 // Promise.resolve().then(() => console.log("this is Promise.resolve 1"));
-// setTimeout(() => console.log("this is setTimeout 1"), 0);
+// setTimeout(() => console.log("this is setTimeout 0"), 0);
 // setTimeout(() => console.log("this is setTimeout 0.02"), 0.02);
 
 // for (let i = 0; i < 1000000000; i++) {}
@@ -197,27 +204,31 @@
 // setImmediate(() => console.log("this is setImmediate 1"));
 // setTimeout(() => console.log("this is setTimeout 1"), 0);
 // Promise.resolve().then(() => console.log("this is Promise.resolve 1"));
-// process.nextTick(() => console.log("this is process.nextTick 1"));
+// process.nextTick(() => {
+//   console.log("this is process.nextTick 1");
+// });
 
+/** Experiment self 1 */
 // const fs = require("fs");
 // setTimeout(() => {
 //   console.log("this is setTimeout 1");
 //   setTimeout(() => console.log("this is setTimeout 2"), 0);
 //   fs.readFile(__filename, () => {
-//     console.log("this is readFile 1");
+//     console.log("this is readFile 1 inner");
 //   });
 //   for (let i = 0; i < 1000000000; i++) {}
 // }, 0);
 
-// const fs = require("fs");
-// fs.readFile(__filename, () => {
-//   console.log("this is readFile 1");
-// });
-// fs.readFile(__filename, () => {
-//   console.log("this is readFile 2");
-//   process.nextTick(() => console.log("this is process.nextTick 1"));
-// });
+/** Experiment self 2  readFiles callback order of execution can never be guaranteed */
+const fs = require("fs");
+fs.readFile(__filename, () => {
+  console.log("this is readFile 1");
+});
+fs.readFile(__filename, () => {
+  console.log("this is readFile 2");
+  process.nextTick(() => console.log("this is process.nextTick 1"));
+});
 
-// fs.readFile(__filename, () => {
-//   console.log("this is readFile 3");
-// });
+fs.readFile(__filename, () => {
+  console.log("this is readFile 3");
+});
