@@ -31,3 +31,24 @@
   [7, 6, 6, 6, 5, 4, 3, 4],
   [8, 7, 7, 7, 6, 5, 4, 3],
 ];
+let number = 0;
+
+for (let i = 1; i < 101; i++) {
+  const t = i + "";
+
+  number += getOneNumbers(t);
+}
+
+function getOneNumbers(stringNumber) {
+  let res = 0;
+  const len = stringNumber.length;
+  for (let i = 0; i < len; i++) {
+    if (stringNumber[i] === "1") {
+      console.log("tttt", stringNumber);
+      res++;
+    }
+  }
+  return res;
+}
+
+console.log(number);
