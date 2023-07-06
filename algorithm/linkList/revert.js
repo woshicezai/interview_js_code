@@ -15,19 +15,35 @@ const node = nodeListGenerator
   .addList(3)
   .addList(4)
   .finish();
-console.log(node);
 
 function revertList(node) {
   let pre = null;
   let cur = node;
 
   while (cur) {
-    let temp = cur.next;
+    const temp = cur.next;
     cur.next = pre;
     pre = cur;
     cur = temp;
   }
-  return node;
+  return pre; //import
 }
 
-console.log(revertList(node));
+// console.log(JSON.stringify(revertList(node)));
+
+/**
+ * 递归写法
+ * 也是依照双指针逻辑写
+ * @param {*} cur
+ * @param {*} pre
+ */
+function revertRecursion(cur, pre) {
+  if (!cur) {
+    return pre;
+  }
+  const temp = cur.next;
+  cur.next = pre;
+  return revertRecursion(temp, cur);
+}
+
+console.log(JSON.stringify(revertRecursion(node)));
