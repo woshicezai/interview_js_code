@@ -43,4 +43,4 @@ node5.next = node6;
 node6.next = node1;
 
 const circleEntry = circleLinkList(node1);
-console.log(circleEntry.value);
+console.log(circleEntry?.value);
