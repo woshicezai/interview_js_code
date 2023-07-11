@@ -35,6 +35,12 @@ console.log(fn("<-<-ab<-", "<-<-<-<-a"));
 console.log(fn("<-<ab<-c", "<<-<a<-<-c"));
 console.log("fn1", Date.now() - start_time_1);
 
+/**
+ * 用堆栈解决
+ * @param {*} str1
+ * @param {*} str2
+ * @returns
+ */
 function fn2(str1, str2) {
   const doDelete = (str) => {
     let flag = 0; // 0 - 正常字符；1 - <；2 - <-

@@ -1,54 +1,20 @@
-[
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-];
-[
-  [0, 1, 2, 3, 4, 5, 6, 7],
-  [1, 0, 0, 0, 0, 0, 0, 0],
-  [2, 0, 0, 0, 0, 0, 0, 0],
-  [3, 0, 0, 0, 0, 0, 0, 0],
-  [4, 0, 0, 0, 0, 0, 0, 0],
-  [5, 0, 0, 0, 0, 0, 0, 0],
-  [6, 0, 0, 0, 0, 0, 0, 0],
-  [7, 0, 0, 0, 0, 0, 0, 0],
-  [8, 0, 0, 0, 0, 0, 0, 0],
-];
-[
-  [0, 1, 2, 3, 4, 5, 6, 7],
-  [1, 1, 1, 2, 3, 4, 5, 6],
-  [2, 2, 2, 1, 2, 3, 4, 5],
-  [3, 3, 3, 2, 1, 2, 3, 4],
-  [4, 4, 4, 3, 2, 2, 3, 4],
-  [5, 5, 5, 4, 3, 3, 3, 4],
-  [6, 5, 6, 5, 4, 3, 4, 4],
-  [7, 6, 6, 6, 5, 4, 3, 4],
-  [8, 7, 7, 7, 6, 5, 4, 3],
-];
-let number = 0;
+const getNext = (needle) => {
+  let next = [];
+  let j = 0;
+  next.push(j);
 
-for (let i = 1; i < 101; i++) {
-  const t = i + "";
-
-  number += getOneNumbers(t);
-}
-
-function getOneNumbers(stringNumber) {
-  let res = 0;
-  const len = stringNumber.length;
-  for (let i = 0; i < len; i++) {
-    if (stringNumber[i] === "1") {
-      console.log("tttt", stringNumber);
-      res++;
-    }
+  for (let i = 1; i < needle.length; ++i) {
+    while (j > 0 && needle[i] !== needle[j]) j = next[j - 1];
+    if (needle[i] === needle[j]) j++;
+    next.push(j);
   }
-  return res;
-}
 
-console.log(number);
+  return next;
+};
+
+const next = getNext("agctagcagctagct");
+console.log(next);
+/**
+ *  a  g  c  t  a  g  c  a  g  c  t  a  g  c  t
+ * [0, 0, 0, 0, 1, 2, 3, 1, 2, 3, 4, 5, 6, 7, 4];
+ */

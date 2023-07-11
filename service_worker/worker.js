@@ -63,6 +63,13 @@ self.addEventListener("push", (event) => {
   //     vibrate: pushData.vibrate || undefined,
   //   };
 
+  self.clients.matchAll().then(function (clients) {
+    clients.forEach(function (client) {
+      client.postMessage({
+        message: pushData,
+      });
+    });
+  });
   // 显示通知
   event.waitUntil(self.registration.showNotification(pushData));
 });
@@ -85,12 +92,10 @@ self.addEventListener("notificationclick", (event) => {
 //数据同步+消息通知
 self.addEventListener("sync", function (event) {
   if (event.type === "sync") {
-    console.log("sync");
     self.clients.matchAll().then(function (clients) {
-      console.log("sync-clients", clients);
       clients.forEach(function (client) {
         client.postMessage({
-          message: "Hello from Service Worker!",
+          message: "sync trigged",
         });
       });
     });

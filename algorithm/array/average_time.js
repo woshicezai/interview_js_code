@@ -1,6 +1,10 @@
+/**
+ * 计算平均时间
+ */
 const times = ["8:15", "6:35", "11:22"];
 
 const average_time = (times) => {
+  //转换为总的分钟
   const all_mins = times.reduce((sum, item) => {
     const [hour, min] = item.split(":").map((item) => item - 0);
     return sum + hour * 60 + min;

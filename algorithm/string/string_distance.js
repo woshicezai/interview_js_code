@@ -1,3 +1,9 @@
+/**
+ * !! 动态规划  还没看懂
+ * @param {*} pre
+ * @param {*} now
+ * @returns
+ */
 function compareStrings(pre, now) {
   const m = pre.length;
   const n = now.length;

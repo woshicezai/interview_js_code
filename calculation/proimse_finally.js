@@ -1,27 +1,21 @@
 Promise.prototype.finally = function (callback) {
   const P = this.constructor;
+  // this.then important
   return this.then(
-    (value) => P.resolve(callback()).then(() => value),
+    (value) => P.resolve(callback()).then(() => value), //后面还接着一个 then  important
     (reason) =>
       P.resolve(callback()).then(() => {
+        //P.resolve important
+        //throw reason important
         throw reason;
       })
   );
 };
 
-// try {
-//   Promise.reject("this is a erorr")
-//     .catch((e) => {
-//       console.log("catch", e);
-//       return e;
-//     })
-//     .finally(() => {
-//       console.log("finally");
-//       return "finally end";
-//     })
-//     .then((res) => {
-//       console.log("after finally then", res);
-//     });
-// } catch (e) {
-//   console.log("try catch", e);
-// }
+// Promise.resolve(1)
+//   .finally((value) => {
+//     console.log("finally", value); //undefined
+//   })
+//   .then((value) => {
+//     console.log("end then", value); //1
+//   });

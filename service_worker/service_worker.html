@@ -70,6 +70,20 @@
         console.log("Received message from Service Worker:", event.data);
         document.getElementById("msg").textContent += event.data.message;
       });
+
+      /**
+       * 触发 service worker 的 sync
+       * 当网络状态恢复后，会立即触发 sync 同步逻辑
+       * */
+      if ("serviceWorker" in navigator && "SyncManager" in window) {
+        setTimeout(() => {
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.sync.register("sync").catch((err) => {
+              console.error("Error registering sync:", err);
+            });
+          });
+        }, 3000);
+      }
     </script>
   </body>
 </html>

@@ -4,6 +4,33 @@ const arr = [
   [1, 2],
 ];
 
+/**
+ * 自己写的一个方法
+ * @param {*} arr
+ * @returns
+ */
+function flat(arr) {
+  let results = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    results = deep(results, arr[i]);
+  }
+
+  function deep(arr1, arr2) {
+    const results = [];
+    arr1.forEach((item1) => {
+      arr2.forEach((item2) => {
+        results.push(item1 + item2);
+      });
+    });
+    return results;
+  }
+  return results;
+}
+
+const start_time_0 = Date.now();
+console.log(flat(arr));
+console.log("flat", Date.now() - start_time_0);
+
 function arrange(arr) {
   const results_times = Math.pow(2, arr.length);
   const result = [];
@@ -67,20 +94,3 @@ function permutate(arr) {
 const start_time_2 = Date.now();
 console.log(permutate(arr));
 console.log("fn2", Date.now() - start_time_2);
-
-function arrange_2(arr) {
-  let pre = arr[0].slice();
-
-  for (let i = 1; i < arr.length; i++) {
-    const result = [];
-    arr[i].forEach((item) => {
-      pre.forEach((each) => {
-        result.push(each + item);
-      });
-    });
-    pre = result;
-  }
-  return pre;
-}
-
-console.log(arrange_2(arr));
