@@ -5,24 +5,24 @@
  * @param {*} obj
  * @returns
  */
-function deepClone(obj) {
-  //symbol ,function 直接返回自身
-  if (typeof obj === "symbol") {
-    return obj;
-  } else if (obj instanceof Function) {
-    return obj;
-  } else if (Array.isArray(obj)) {
-    return obj.map((item) => deepClone(item));
-  } else if (typeof obj === "object") {
-    const newObj = {};
-    Object.keys(obj).forEach((key) => {
-      newObj[key] = deepClone(obj[key]);
-    });
-    return newObj;
-  } else {
-    return obj;
-  }
-}
+// function deepClone(obj) {
+//   //symbol ,function 直接返回自身
+//   if (typeof obj === "symbol") {
+//     return obj;
+//   } else if (obj instanceof Function) {
+//     return obj;
+//   } else if (Array.isArray(obj)) {
+//     return obj.map((item) => deepClone(item));
+//   } else if (typeof obj === "object") {
+//     const newObj = {};
+//     Object.keys(obj).forEach((key) => {
+//       newObj[key] = deepClone(obj[key]);
+//     });
+//     return newObj;
+//   } else {
+//     return obj;
+//   }
+// }
 
 function deepClone(obj, hash = new WeakMap()) {
   if (obj === null) return obj; // 如果是null或者undefined我就不进行拷贝操作

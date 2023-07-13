@@ -8,16 +8,15 @@ function mockFetch(url) {
 
 function fetchWithRetry(url, maxTimes = 3) {
   return new Promise((resolve, reject) => {
+    if (maxTimes === 0) {
+      throw "fail more than maxTimes";
+    }
     mockFetch(url)
       .then((value) => {
         resolve(value);
       })
       .catch((err) => {
-        if (maxTimes === 0) {
-          reject(err);
-        } else {
-          return fetchWithRetry(url, maxTimes - 1);
-        }
+        return fetchWithRetry(url, maxTimes - 1);
       });
   });
 }

@@ -7,12 +7,13 @@
 function debounce(fn, timeout) {
   let timer = null;
   return function (...args) {
+    const that = this;
     if (timer) {
       clearTimeout(timer);
       timer = null;
     }
     timer = setTimeout(() => {
-      fn.apply(this, args);
+      fn.apply(that, args);
     }, timeout);
   };
 }
@@ -26,13 +27,14 @@ function debounce(fn, timeout) {
 function throttle(fn, timeout) {
   let timer = null;
   return function (...args) {
+    const that = this;
     if (timer) {
       return;
     }
     timer = setTimeout(() => {
       clearTimeout(timer);
       timer = null;
-      fn.apply(this, args);
+      fn.apply(that, args);
     }, timeout);
   };
 }
