@@ -1,5 +1,5 @@
 /**
- * 将数组每个元素都进行平方，然后返回递增的数组
+ * 将数组每个元素都进行平方，然后返回按序递增的数组
  * @param {*} arr
  */
 function getSquareResult(arr) {
