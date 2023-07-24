@@ -1,3 +1,8 @@
+/**
+ * 基线排序
+ * @param {*} nums
+ * @returns
+ */
 function sort(nums) {
   let result = [...nums];
   const maxDigitCount = result.reduce((max, num) => {

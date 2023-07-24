@@ -9,7 +9,7 @@ function minSubArrayLen(arr, target) {
   let i = 0;
   for (let j = 0; j < arr.length; j++) {
     sum += arr[j];
-    //while import
+    //while important
     while (sum >= target) {
       min_distanth = Math.min(min_distanth, j - i + 1);
       sum -= arr[i];

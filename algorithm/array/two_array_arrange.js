@@ -10,11 +10,6 @@ const arr = [
  * @returns
  */
 function flat(arr) {
-  let results = arr[0];
-  for (let i = 1; i < arr.length; i++) {
-    results = deep(results, arr[i]);
-  }
-
   function deep(arr1, arr2) {
     const results = [];
     arr1.forEach((item1) => {
@@ -24,6 +19,12 @@ function flat(arr) {
     });
     return results;
   }
+
+  let results = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    results = deep(results, arr[i]);
+  }
+
   return results;
 }
 
