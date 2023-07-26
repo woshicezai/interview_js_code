@@ -37,6 +37,7 @@ function traverse_start(node) {
 
 /**
  * 中序
+ * 写的没有 carl的好，见下方的traverse_middle_2
  */
 function traverse_middle(node) {
   const stack = [];
@@ -136,5 +137,58 @@ const node = {
 };
 
 console.log("前序", traverse_start(node));
+console.log("前序2", traverse_start_2(node));
 console.log("中序", traverse_middle(node));
+console.log("中序2", traverse_middle_2(node));
 console.log("后序", traverse_end(node));
+console.log("后序2", traverse_end_2(node));
+
+function traverse_start_2(node) {
+  const stack = [node];
+  const output = [];
+
+  while (stack.length) {
+    const cur = stack.pop();
+    const left = cur?.left;
+    const right = cur?.right;
+    right && stack.push(right);
+    left && stack.push(left);
+    output.push(cur.value);
+  }
+  return output;
+}
+
+function traverse_middle_2(node) {
+  const stack = [];
+  const output = [];
+
+  let cur = node;
+
+  while (cur || stack.length) {
+    if (cur) {
+      stack.push(cur);
+      cur = cur.left;
+    } else {
+      cur = stack.pop();
+      output.push(cur.value);
+      cur = cur.right;
+    }
+  }
+
+  return output;
+}
+
+function traverse_end_2(node) {
+  const stack = [node];
+  const output = [];
+
+  while (stack.length) {
+    const cur = stack.pop();
+    const left = cur?.left;
+    const right = cur?.right;
+    left && stack.push(left);
+    right && stack.push(right);
+    output.push(cur.value);
+  }
+  return output.reverse();
+}
