@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>this</title>
+  </head>
+  <body>
+    <script>
+      const obj = {
+        fn1: () => console.log(this),
+        fn2: function () {
+          console.log(this);
+        },
+      };
+
+      obj.fn1();
+      obj.fn2();
+
+      const x = new obj.fn1();
+      const y = new obj.fn2();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>white</title>
+  </head>
+  <body>
+    <script>
+      const node = {
+        value: 1,
+        right: {
+          value: 3,
+          right: {
+            value: 7,
+            right: {
+              value: 10,
+            },
+          },
+          left: {
+            value: 6,
+            left: {
+              value: 9,
+            },
+          },
+        },
+        left: {
+          value: 2,
+          right: {
+            value: 5,
+          },
+          left: {
+            value: 4,
+            left: {
+              value: 8,
+            },
+          },
+        },
+      };
+
+      function findPath(node) {
+        const res = [];
+        const getPath = (node, path) => {
+          if (!node.left && !node.right) {
+            path += node.value;
+            res.push(path);
+          }
+          path = path + node.value + "->";
+          node.left && getPath(node.left, path);
+          node.right && getPath(node.right, path);
+        };
+        getPath(node, "");
+        return res;
+      }
+
+      function findPathStack(node) {}
+
+      console.log(findPath(node));
+    </script>
+  </body>
+</html>
