@@ -42,3 +42,18 @@ function removeUnusedSpaceInWord(str) {
 }
 
 console.log(revertWord("    hello     world "));
+
+function revertWord2(str = "") {
+  const arr = str.split(" ");
+  return arr.reverse().reduce((res, item, index) => {
+    if (item === "") {
+      return res;
+    } else {
+      return res + item + (index !== arr.length - 1 ? " " : "");
+    }
+  }, "");
+}
+
+console.log(revertWord2("    hello     world "));
+
+console.log("a".split("a"));
