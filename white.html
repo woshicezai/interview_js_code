@@ -56,6 +56,181 @@
       function findPathStack(node) {}
 
       console.log(findPath(node));
+
+      function travelStart(node) {
+        const res = [];
+        function travel(node, res) {
+          if (node && node.value) {
+            res.push(node.value);
+          }
+          node.left && travel(node.left, res);
+          node.right && travel(node.right, res);
+        }
+        travel(node, res);
+        return res;
+      }
+      function travelMiddle(node) {
+        const res = [];
+        function travel(node, res) {
+          node.left && travel(node.left, res);
+          if (node && node.value) {
+            res.push(node.value);
+          }
+          node.right && travel(node.right, res);
+        }
+        travel(node, res);
+        return res;
+      }
+
+      function travelEnd(node) {
+        const res = [];
+        function travel(node, res) {
+          node.left && travel(node.left, res);
+          node.right && travel(node.right, res);
+          if (node && node.value) {
+            res.push(node.value);
+          }
+        }
+        travel(node, res);
+        return res;
+      }
+
+      console.log("travelStart", travelStart(node));
+      console.log("travelStart_stack", travelStart_stack(node));
+      console.log("travelMiddle", travelMiddle(node));
+      console.log("travelMiddle_stack", travelMiddle_stack(node));
+      console.log("travelEnd", travelEnd(node));
+      console.log("horizon_stack", horizon_stack(node));
+
+      function travelStart_stack(node) {
+        const stack = [node];
+        const res = [];
+        while (stack.length) {
+          const item = stack.pop();
+          item.right && stack.push(item.right);
+          item.left && stack.push(item.left);
+          res.push(item.value);
+        }
+        return res;
+      }
+
+      function travelMiddle_stack(node) {
+        const stack = [];
+        const res = [];
+        let item = node;
+        while (stack.length || item) {
+          if (item) {
+            stack.push(item);
+            item = item.left;
+          } else {
+            item = stack.pop();
+            res.push(item.value);
+            item = item.right || null;
+          }
+        }
+        return res;
+      }
+
+      function horizon_stack(node) {
+        const queue = [node];
+        const res = [];
+        let size = 0;
+
+        while (queue.length) {
+          size = queue.length;
+          const part = [];
+          while (size--) {
+            const item = queue.shift();
+            part.push(item.value);
+            item.left && queue.push(item.left);
+            item.right && queue.push(item.right);
+          }
+          res.push(part);
+        }
+        return res;
+      }
+
+      function deepClone(obj, hash = new WeakMap()) {
+        if (obj === null) return null;
+        if (obj instanceof Date) return new Date(obj);
+        if (obj instanceof RegExp) return new RegExp(obj);
+        if (typeof obj !== "object") return obj;
+
+        if (hash.get(obj)) return hash.get(obj);
+
+        const cloneObj = new obj.constructor();
+        hash.set(obj, cloneObj);
+
+        Object.keys(obj).forEach((key) => {
+          cloneObj[key] = deepClone(obj[key], hash);
+        });
+        return cloneObj;
+      }
+
+      function co(Generator) {
+        const generator = Generator();
+        function step(params) {
+          let next = generator.next(params);
+          const { value, done } = next;
+          return new Promise((resolve, reject) => {
+            if (done) {
+              resolve(params);
+            } else {
+              Promise.resolve(value).then((result) => {
+                step(result);
+              });
+            }
+          });
+        }
+        step();
+      }
+
+      co(function* () {
+        const data1 = yield Promise.resolve(1);
+        const data2 = yield Promise.resolve(2);
+        const data3 = yield Promise.resolve(3);
+        console.log(data1, data2, data3);
+      });
+
+      function flat(arr) {
+        const res = [];
+        function step(arr) {
+          arr.forEach((item) => {
+            if (Array.isArray(item)) {
+              step(item);
+            } else {
+              res.push(parseInt(item));
+            }
+          });
+        }
+        step(arr);
+        return Array.from(new Set(res.sort((a, b) => a - b)));
+      }
+
+      console.log(
+        flat([
+          [1, 2, 2],
+          [3, 4, 5, 5],
+          [6, 7, 8, 9, [11, 12, [12, 13, [14]]]],
+          10,
+        ])
+      );
+
+      function _new(func, ...args) {
+        const obj = Object.create(func.prototype);
+        const res = func.apply(obj, args);
+        return res instanceof Object ? res : obj;
+      }
+
+      function T() {
+        this.name = "test";
+        return {
+          name: "lll",
+        };
+      }
+
+      const t = new T();
+      console.log(t);
     </script>
   </body>
 </html>

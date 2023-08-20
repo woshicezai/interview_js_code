@@ -1,17 +1,3 @@
-function debounce(fn, wait) {
-  let timeHander = null;
-  return function (...args) {
-    if (timeHander) {
-      clearTimeout(timeHander);
-      timeHander = null;
-    }
-    const context = this;
-    timeHander = setTimeout(() => {
-      fn.apply(context, args);
-    }, wait);
-  };
-}
-
 function throttle(fn, wait) {
   let timeHander = null;
   return function (...args) {
@@ -50,4 +36,41 @@ function throttle(fn, interval) {
       }, interval - (currentTime - lastExecutionTime));
     }
   };
+}
+
+/**
+ * 立即执行+取消执行
+ * @param {} func
+ * @param {*} wait
+ * @param {*} immediate
+ * @returns
+ */
+function debounce(func, wait, immediate) {
+  let timeout;
+  function d(...args) {
+    const that = this;
+    if (immediate) {
+      if (!timeout) {
+        func.apply(that, args);
+      }
+      timeout = setTimeout(() => {
+        clearTimeout(timeout);
+        timeout = null;
+      }, wait);
+    } else {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      timeout = setTimeout(() => {
+        func.apply(that, args);
+        timeout = null;
+      }, wait);
+    }
+  }
+  d.cancel = function () {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+  return d;
 }
