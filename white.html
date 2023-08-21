@@ -4,233 +4,86 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>white</title>
+    <style>
+      .container {
+        overflow: hidden;
+      }
+      .div {
+        width: 100px;
+        height: 100px;
+        background: lightblue;
+        margin: 100px;
+      }
+    </style>
   </head>
   <body>
+    <div style="border: 1px solid #000; overflow: hidden">
+      <div
+        style="width: 100px; height: 100px; background: #eee; float: left"
+      ></div>
+    </div>
     <script>
-      const node = {
-        value: 1,
-        right: {
-          value: 3,
-          right: {
-            value: 7,
-            right: {
-              value: 10,
-            },
-          },
-          left: {
-            value: 6,
-            left: {
-              value: 9,
-            },
-          },
-        },
-        left: {
-          value: 2,
-          right: {
-            value: 5,
-          },
-          left: {
-            value: 4,
-            left: {
-              value: 8,
-            },
-          },
-        },
-      };
-
-      function findPath(node) {
-        const res = [];
-        const getPath = (node, path) => {
-          if (!node.left && !node.right) {
-            path += node.value;
-            res.push(path);
-          }
-          path = path + node.value + "->";
-          node.left && getPath(node.left, path);
-          node.right && getPath(node.right, path);
-        };
-        getPath(node, "");
-        return res;
-      }
-
-      function findPathStack(node) {}
-
-      console.log(findPath(node));
-
-      function travelStart(node) {
-        const res = [];
-        function travel(node, res) {
-          if (node && node.value) {
-            res.push(node.value);
-          }
-          node.left && travel(node.left, res);
-          node.right && travel(node.right, res);
-        }
-        travel(node, res);
-        return res;
-      }
-      function travelMiddle(node) {
-        const res = [];
-        function travel(node, res) {
-          node.left && travel(node.left, res);
-          if (node && node.value) {
-            res.push(node.value);
-          }
-          node.right && travel(node.right, res);
-        }
-        travel(node, res);
-        return res;
-      }
-
-      function travelEnd(node) {
-        const res = [];
-        function travel(node, res) {
-          node.left && travel(node.left, res);
-          node.right && travel(node.right, res);
-          if (node && node.value) {
-            res.push(node.value);
+      //冒泡
+      function bubbling(arr) {
+        const len = arr.length - 1;
+        for (let i = 0; i < len; i++) {
+          for (let j = 0; j < len - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+              [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            }
           }
         }
-        travel(node, res);
-        return res;
       }
-
-      console.log("travelStart", travelStart(node));
-      console.log("travelStart_stack", travelStart_stack(node));
-      console.log("travelMiddle", travelMiddle(node));
-      console.log("travelMiddle_stack", travelMiddle_stack(node));
-      console.log("travelEnd", travelEnd(node));
-      console.log("horizon_stack", horizon_stack(node));
-
-      function travelStart_stack(node) {
-        const stack = [node];
-        const res = [];
-        while (stack.length) {
-          const item = stack.pop();
-          item.right && stack.push(item.right);
-          item.left && stack.push(item.left);
-          res.push(item.value);
+      //插入
+      function insert(arr) {
+        for (let i = 1; i < arr.length; i++) {
+          const target = arr[i];
+          let pre = i - 1;
+          while (pre > -1 && target < arr[pre]) {
+            arr[pre + 1] = arr[pre];
+            pre--;
+          }
+          arr[pre + 1] = target;
         }
-        return res;
       }
 
-      function travelMiddle_stack(node) {
-        const stack = [];
-        const res = [];
-        let item = node;
-        while (stack.length || item) {
-          if (item) {
-            stack.push(item);
-            item = item.left;
+      //希尔
+      function shell(arr) {
+        let step = parseInt(arr.length / 2);
+        while (step) {
+          for (let i = step; i < arr.length; i++) {
+            const target = arr[i];
+            let pre = i - step;
+            while (pre > -1 && target < arr[pre]) {
+              arr[pre + step] = arr[pre];
+              pre -= step;
+            }
+            arr[pre + step] = target;
+          }
+          if (step === 2) {
+            step = 1;
           } else {
-            item = stack.pop();
-            res.push(item.value);
-            item = item.right || null;
+            step = parseInt((step * 5) / 11);
           }
         }
-        return res;
       }
 
-      function horizon_stack(node) {
-        const queue = [node];
-        const res = [];
-        let size = 0;
-
-        while (queue.length) {
-          size = queue.length;
-          const part = [];
-          while (size--) {
-            const item = queue.shift();
-            part.push(item.value);
-            item.left && queue.push(item.left);
-            item.right && queue.push(item.right);
+      //选择
+      function select(arr) {
+        for (let i = 0; i < arr.length; i++) {
+          let min = Infinity;
+          for (let j = i; j < arr.length; j++) {
+            if (arr[j] < min) {
+              min = arr[j];
+              [arr[j], arr[i]] = [arr[i], arr[j]];
+            }
           }
-          res.push(part);
         }
-        return res;
       }
 
-      function deepClone(obj, hash = new WeakMap()) {
-        if (obj === null) return null;
-        if (obj instanceof Date) return new Date(obj);
-        if (obj instanceof RegExp) return new RegExp(obj);
-        if (typeof obj !== "object") return obj;
-
-        if (hash.get(obj)) return hash.get(obj);
-
-        const cloneObj = new obj.constructor();
-        hash.set(obj, cloneObj);
-
-        Object.keys(obj).forEach((key) => {
-          cloneObj[key] = deepClone(obj[key], hash);
-        });
-        return cloneObj;
-      }
-
-      function co(Generator) {
-        const generator = Generator();
-        function step(params) {
-          let next = generator.next(params);
-          const { value, done } = next;
-          return new Promise((resolve, reject) => {
-            if (done) {
-              resolve(params);
-            } else {
-              Promise.resolve(value).then((result) => {
-                step(result);
-              });
-            }
-          });
-        }
-        step();
-      }
-
-      co(function* () {
-        const data1 = yield Promise.resolve(1);
-        const data2 = yield Promise.resolve(2);
-        const data3 = yield Promise.resolve(3);
-        console.log(data1, data2, data3);
-      });
-
-      function flat(arr) {
-        const res = [];
-        function step(arr) {
-          arr.forEach((item) => {
-            if (Array.isArray(item)) {
-              step(item);
-            } else {
-              res.push(parseInt(item));
-            }
-          });
-        }
-        step(arr);
-        return Array.from(new Set(res.sort((a, b) => a - b)));
-      }
-
-      console.log(
-        flat([
-          [1, 2, 2],
-          [3, 4, 5, 5],
-          [6, 7, 8, 9, [11, 12, [12, 13, [14]]]],
-          10,
-        ])
-      );
-
-      function _new(func, ...args) {
-        const obj = Object.create(func.prototype);
-        const res = func.apply(obj, args);
-        return res instanceof Object ? res : obj;
-      }
-
-      function T() {
-        this.name = "test";
-        return {
-          name: "lll",
-        };
-      }
-
-      const t = new T();
-      console.log(t);
+      var arr = [3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48];
+      select(arr);
+      console.log(arr); //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
     </script>
   </body>
 </html>

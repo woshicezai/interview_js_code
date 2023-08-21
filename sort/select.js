@@ -4,15 +4,13 @@
  */
 function select(arr) {
   for (let i = 0; i < arr.length; i++) {
-    let min_index = -1;
     let min = Infinity;
     for (let j = i; j < arr.length; j++) {
       if (arr[j] < min) {
         min = arr[j];
-        min_index = j;
       }
     }
-    [arr[i], arr[min_index]] = [arr[min_index], arr[i]];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 }
 
